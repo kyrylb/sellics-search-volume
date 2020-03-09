@@ -1,5 +1,7 @@
 package com.sellics.search.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.sellics.search.dto.SearchVolumeDto;
 import com.sellics.search.service.SearchVolumeService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,9 @@ public class SearchVolumeController {
     private final SearchVolumeService searchVolumeService;
 
     @GetMapping(path = ESTIMATE_KEYWORD)
-//    @HystrixCommand(fallbackMethod = "hystrixFallback", commandProperties = {
-//            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")
-//    })
+    @HystrixCommand(fallbackMethod = "hystrixFallback", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")
+    })
     public SearchVolumeDto estimateKeyword(@RequestParam("keyword") final String keyword) {
         int searchVolumeScore = searchVolumeService.calculateSearchVolume(keyword);
         return SearchVolumeDto.builder()
@@ -26,8 +28,8 @@ public class SearchVolumeController {
                               .build();
     }
 
-    public String hystrixFallback() {
-        return "Request takes too long to respond. SLA is 10 seconds";
+    public SearchVolumeDto hystrixFallback(final String keyword) {
+        return SearchVolumeDto.builder().keyword(keyword).score(-1).build();    // SLA violation (10 seconds), erroneous result
     }
 
 }
