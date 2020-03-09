@@ -15,6 +15,14 @@
     <springfox-swagger2.version>3.0.0-SNAPSHOT</springfox-swagger2.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>JFrog</id>
+      <name>JFrog Snapshot Repository</name>
+      <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -43,7 +51,7 @@
     </dependency>
     <dependency>
       <groupId>io.springfox</groupId>
-      <artifactId>springfox-spring-web</artifactId>
+      <artifactId>springfox-spring-webmvc</artifactId>
       <version>${springfox-swagger2.version}</version>
     </dependency>
     <dependency>
