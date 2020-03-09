@@ -19,7 +19,7 @@ public class SearchScoreCalculator {
         int maxPartialCharCount = keyword.length() - 1;
         double[] weights = new double[keyword.length() - 1];    // only for partial searches, so length-1
 
-        int sumOfPartialCharCounts = maxPartialCharCount * (maxPartialCharCount + 1) / 2;    // sum of number sequence up to and including maxPartialCharNumber
+        int sumOfPartialCharCounts = maxPartialCharCount * (maxPartialCharCount + 1) / 2;    // number of chars for all partial searches
         double weightCoefficient = 100.0 / sumOfPartialCharCounts;    // weight coefficient value per 1 position
         for (int i = 0; i < keyword.length() - 1; i++) {    // only for partial searches, so length-1
             double weight = (keyword.length() - (i + 1)) * weightCoefficient;   // 1-char search has the biggest weight, 2-char is less etc.
@@ -38,7 +38,8 @@ public class SearchScoreCalculator {
      *
      * Example: partial searches for keyword "canon" with weights=[40.0, 30.0, 20.0, 10.0], if partial search with "c" returned
      * full keyword "cannon" at the very beginning of the list:
-     * weights[charCount-1] / autocompleteListPosition + 1 = 40.0 / 1 => 40.0
+     * weights[charCount-1] / autocompleteListPosition + 1 = 40.0 / 1 => 40.0.
+     * scores for the non-top position searches are less valuable and should be decreased.
      *
      * If each partial search returns the top position, than the final score is: 40.0 / 1 + 30.0 / 1 + 20.0 / 1 + 10.0 / 1 => 100.0
      */
@@ -50,7 +51,7 @@ public class SearchScoreCalculator {
             throw new IllegalArgumentException("Char count index is out of weight array bounds !");
         }
 
-        return partialSearchWeights[charCount - 1] / (autocompleteListPosition * 0.1 + 1);  // top position returns the biggest score
+        return partialSearchWeights[charCount - 1] / (autocompleteListPosition + 1);  // top position returns the biggest score
     }
 
 }

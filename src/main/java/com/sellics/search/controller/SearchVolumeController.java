@@ -17,6 +17,9 @@ public class SearchVolumeController {
     @GetMapping(path = ESTIMATE_KEYWORD)
     public SearchVolumeDto estimateKeyword(@RequestParam("keyword") final String keyword) {
         int searchVolumeScore = searchVolumeService.calculateSearchVolume(keyword);
-        return SearchVolumeDto.builder().keyword(keyword).score(searchVolumeScore).build();
+        return SearchVolumeDto.builder()
+                              .keyword(keyword)
+                              .score(searchVolumeScore)
+                              .build();
     }
 }
