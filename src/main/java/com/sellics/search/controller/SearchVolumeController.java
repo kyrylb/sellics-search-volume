@@ -15,6 +15,9 @@ public class SearchVolumeController {
     private final SearchVolumeService searchVolumeService;
 
     @GetMapping(path = ESTIMATE_KEYWORD)
+//    @HystrixCommand(fallbackMethod = "hystrixFallback", commandProperties = {
+//            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")
+//    })
     public SearchVolumeDto estimateKeyword(@RequestParam("keyword") final String keyword) {
         int searchVolumeScore = searchVolumeService.calculateSearchVolume(keyword);
         return SearchVolumeDto.builder()
@@ -22,4 +25,9 @@ public class SearchVolumeController {
                               .score(searchVolumeScore)
                               .build();
     }
+
+    public String hystrixFallback() {
+        return "Request takes too long to respond. SLA is 10 seconds";
+    }
+
 }
