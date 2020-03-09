@@ -29,7 +29,7 @@ public class SearchVolumeController {
     }
 
     public SearchVolumeDto hystrixFallback(final String keyword) {
-        return SearchVolumeDto.builder().keyword(keyword).score(-1).build();    // SLA violation (10 seconds), erroneous result
+        return SearchVolumeDto.builder().keyword(keyword).score(-1).build();    // SLA violation (10 seconds), erroneous result -1
     }
 
 }

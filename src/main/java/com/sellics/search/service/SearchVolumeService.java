@@ -1,6 +1,5 @@
 package com.sellics.search.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sellics.search.utils.SearchScoreCalculator;
 import java.io.IOException;
@@ -26,10 +25,9 @@ public class SearchVolumeService {
     }
 
     /**
-     * Calculates search volume by running partial searches and summing up scores for each of them
+     * Calculates search volume by running partial searches and summing up scores for each of them.
      * Each partial score depends on the weight (which, in its turn, depends on char count for each search) and
      * position in the autocomplete list.
-     *
      */
     public int calculateSearchVolume(final String keyword) {
         double[] partialSearchWeights = SearchScoreCalculator.getPartialSearchWeights(keyword);
@@ -47,6 +45,10 @@ public class SearchVolumeService {
         return (int)searchVolume;
     }
 
+    /**
+     * Gets autocomplete list for each of the partial searches.
+     * Example for original keyword "canon": "cano", "can", "ca", "c"
+     */
     private List<String> getAutocompleteList(final String partialKeyword) {
         if (partialKeyword == null || partialKeyword.length() < 1) {
             throw new IllegalArgumentException("Partial keyword length should be bigger than 1 char !");

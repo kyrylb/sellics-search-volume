@@ -37,7 +37,7 @@ public class SearchScoreCalculator {
      * 2) Position in the autocomplete list - top position is minimum divider 1.
      *
      * Example: partial searches for keyword "canon" with weights=[40.0, 30.0, 20.0, 10.0], if partial search with "c" returned
-     * full keyword "cannon" at the very beginning of the list:
+     * full keyword "canon" at the very beginning of the list:
      * weights[charCount-1] / autocompleteListPosition + 1 = 40.0 / 1 => 40.0.
      * scores for the non-top position searches are less valuable and should be decreased.
      *
